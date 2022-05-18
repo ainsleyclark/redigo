@@ -16,13 +16,20 @@ A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 go get -u github.com/ainsleyclark/redigo
 ```
 
-## Introduction
+## Quick Start
+
+See below for a quick start to create a new Redis Client with an encoder. For more client methods see the
+[Go Doc](https://pkg.go.dev/github.com/ainsleyclark/redigo) which includes all the client methods.
 
 ```go
 func Example() {
 	ctx := context.Background()
 
 	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+	err := c.Ping(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
 	err := c.Set(ctx, "my-key", "hello", redigo.Options{
 		Expiration: time.Second * 100,
