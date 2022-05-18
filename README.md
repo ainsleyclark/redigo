@@ -1,6 +1,5 @@
-# RediGo
-
-A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
+<div align="center">
+<img height="250" src="res/logo.svg" alt="Errors Logo" />
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
 [![GoDoc](https://godoc.org/github.com/ainsleyclark/redigo/redis?status.svg)](https://pkg.go.dev/github.com/ainsleyclark/redigo)
@@ -8,7 +7,11 @@ A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 [![codecov](https://codecov.io/gh/ainsleyclark/redigo/branch/master/graph/badge.svg?token=K27L8LS7DA)](https://codecov.io/gh/ainsleyclark/redigo)
 [![GoReportCard](https://goreportcard.com/badge/github.com/ainsleyclark/redigo)](https://goreportcard.com/report/github.com/ainsleyclark/redigo)
 
-## Why
+</div>
+
+# RediGo
+
+A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 
 ## Install
 
@@ -92,5 +95,7 @@ func ExampleMessagePack() {
 ```
 
 ## TODO
-
 - Benchmarks
+
+## Credits
+Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
