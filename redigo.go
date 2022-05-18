@@ -49,6 +49,7 @@ type (
 		Invalidate(context.Context, []string)
 		// Flush removes all items from the cache.
 		Flush(context.Context)
+		// TODO - Add Close() error io.Closer method.
 	}
 )
 
