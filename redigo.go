@@ -52,19 +52,8 @@ type (
 	}
 )
 
-// newWithClient is an alias for creating a new Cache
-// store by injecting the Redis client.
-var newClient = func(client *redis.Client, enc Encoder) *Cache {
-	c := &Cache{
-		client:  client,
-		mtx:     &sync.Mutex{},
-		encoder: enc,
-	}
-	return c
-}
-
 // New creates a new store to Redis instance(s).
-func New(opts *redis.Options, enc Encoder) Store {
+func New(opts *redis.Options, enc Encoder) *Cache {
 	return &Cache{
 		client:  redis.NewClient(opts),
 		mtx:     &sync.Mutex{},
@@ -119,6 +108,10 @@ func (c *Cache) Set(ctx context.Context, key string, value any, options Options)
 
 	return nil
 }
+
+//rm -rf mocks \
+//&& mockery --all --keeptree --exported=true --output=./mocks \
+//&& mv mocks/internal mocks/redis
 
 // Delete removes a singular item from the cache by
 // a specific key.

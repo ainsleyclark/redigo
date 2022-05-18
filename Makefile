@@ -24,22 +24,21 @@ cover: test # Run all the tests and opens the coverage report
 .PHONY: cover
 
 mock: # Make mocks keeping directory tree
-	rm -rf gen/mocks \
-	&& mockery --all --keeptree --exported=true --output=./gen/mocks \
-	&& mv mocks/cache/internal mocks/cache/redis \
+	rm -rf mocks \
+	&& mockery --name=Encoder --recursive --exported=true --output=./mocks \
+	&& mockery --name=RedisStore --recursive --exported=true --output=./mocks
 .PHONY: mock
 
 doc: # Run go doc
 	godoc -http localhost:8080
 .PHONY: doc
 
-.PHONY: all
 all: # Make format, lint and test
 	$(MAKE) format
 	$(MAKE) lint
 	$(MAKE) test
+.PHONY: all
 
-.PHONY: todo
 todo: # Show to-do items per file
 	$(Q) grep \
 		--exclude=Makefile.util \
@@ -50,7 +49,8 @@ todo: # Show to-do items per file
 		-nRo \
 		-E '\S*[^\.]TODO.*' \
 		.
+.PHONY: todo
 
-.PHONY: help
 help: # Display this help
 	$(Q) awk 'BEGIN {FS = ":.*#"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?#/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+.PHONY: help
