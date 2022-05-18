@@ -17,10 +17,15 @@ type Encoder interface {
 	Decode([]byte, any) error
 }
 
-// GobEnc implements the encoder interface.
-type GobEnc struct{}
+// NewGobEncoder returns a new Gob encoder for RediGo.
+func NewGobEncoder() Encoder {
+	return &gobEnc{}
+}
 
-func (g GobEnc) Encode(value any) ([]byte, error) {
+// gobEnc implements the encoder interface.
+type gobEnc struct{}
+
+func (g gobEnc) Encode(value any) ([]byte, error) {
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	err := enc.Encode(value)
@@ -30,19 +35,24 @@ func (g GobEnc) Encode(value any) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (g GobEnc) Decode(data []byte, value any) error {
+func (g gobEnc) Decode(data []byte, value any) error {
 	buf := bytes.NewBuffer(data)
 	dec := gob.NewDecoder(buf)
 	return dec.Decode(value)
 }
 
-// JSONEnc implements the encoder interface.
-type JSONEnc struct{}
+// NewJSONEncoder returns a new Gob encoder for RediGo.
+func NewJSONEncoder() Encoder {
+	return &jsonEnc{}
+}
 
-func (j JSONEnc) Encode(value any) ([]byte, error) {
+// jsonEnc implements the encoder interface.
+type jsonEnc struct{}
+
+func (j jsonEnc) Encode(value any) ([]byte, error) {
 	return json.Marshal(value)
 }
 
-func (j JSONEnc) Decode(data []byte, value any) error {
+func (j jsonEnc) Decode(data []byte, value any) error {
 	return json.Unmarshal(data, value)
 }

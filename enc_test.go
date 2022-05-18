@@ -51,9 +51,9 @@ func UtilTestEncode(t *testing.T, enc Encoder, want string) {
 }
 
 func TestGobEncode(t *testing.T) {
-	UtilTestEncode(t, &GobEnc{}, "\b\f\x00\x05hello")
+	UtilTestEncode(t, &gobEnc{}, "\b\f\x00\x05hello")
 }
 
 func TestJSONEncode(t *testing.T) {
-	UtilTestEncode(t, &JSONEnc{}, "\"hello\"")
+	UtilTestEncode(t, &jsonEnc{}, "\"hello\"")
 }
