@@ -1,4 +1,5 @@
 # redigo
+
 A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
@@ -17,3 +18,30 @@ go get -u github.com/ainsleyclark/redigo
 
 ## Introduction
 
+```go
+func Example() {
+	ctx := context.Background()
+
+	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+
+	err := c.Set(ctx, "my-key", "hello", redigo.Options{
+		Expiration: time.Second * 100,
+		Tags:       []string{"my-tag"},
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var val string
+	err = c.Get(ctx, "my-key", &val)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	err = c.Delete(ctx, "my-key")
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+```
