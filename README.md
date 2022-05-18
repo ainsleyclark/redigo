@@ -87,7 +87,7 @@ func (m MessagePack) Decode(data []byte, value any) error {
 }
 
 func ExampleMessagePack() {
-	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+	c := redigo.New(&redis.Options{}, &MessagePack{})
 }
 ```
 
