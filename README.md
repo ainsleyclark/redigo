@@ -22,7 +22,7 @@ See below for a quick start to create a new Redis Client with an encoder. For mo
 [Go Doc](https://pkg.go.dev/github.com/ainsleyclark/redigo) which includes all the client methods.
 
 ```go
-func Example() {
+func ExampleClient() {
 	ctx := context.Background()
 
 	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
@@ -52,3 +52,45 @@ func Example() {
 }
 
 ```
+
+## Encoders
+
+### JSON
+Use `NewJSONEncoder()` in the constructor when creating a new client.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewJSONEncoder())
+```
+
+### Gob
+Use `NewGobEncoder()` in the constructor when creating a new client.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+```
+
+### Custom
+You can pass in custom encoders to the client constructor. Below is a message pack example. Using
+[github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack)
+
+```go
+import "github.com/vmihailenco/msgpack/v5"
+
+type MessagePack struct{}
+
+func (m MessagePack) Encode(value any) ([]byte, error) {
+	return msgpack.Marshal(value)
+}
+
+func (m MessagePack) Decode(data []byte, value any) error {
+	return msgpack.Unmarshal(data, value)
+}
+
+func ExampleMessagePack() {
+	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+}
+```
+
+## See Also
+
+- [https://github.com/go-redis/redis]
