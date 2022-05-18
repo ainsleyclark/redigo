@@ -109,10 +109,6 @@ func (c *Cache) Set(ctx context.Context, key string, value any, options Options)
 	return nil
 }
 
-//rm -rf mocks \
-//&& mockery --all --keeptree --exported=true --output=./mocks \
-//&& mv mocks/internal mocks/redis
-
 // Delete removes a singular item from the cache by
 // a specific key.
 func (c *Cache) Delete(ctx context.Context, key string) error {
