@@ -1,4 +1,5 @@
-# redigo
+# RediGo
+
 A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 
 [![made-with-Go](https://img.shields.io/badge/Made%20with-Go-1f425f.svg)](http://golang.org)
@@ -15,5 +16,81 @@ A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 go get -u github.com/ainsleyclark/redigo
 ```
 
-## Introduction
+## Quick Start
 
+See below for a quick start to create a new Redis Client with an encoder. For more client methods see the
+[Go Doc](https://pkg.go.dev/github.com/ainsleyclark/redigo) which includes all the client methods.
+
+```go
+func ExampleClient() {
+	ctx := context.Background()
+
+	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+	err := c.Ping(ctx)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	err = c.Set(ctx, "my-key", "hello", redigo.Options{
+		Expiration: time.Second * 100,
+		Tags:       []string{"my-tag"},
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var val string
+	err = c.Get(ctx, "my-key", &val)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	err = c.Delete(ctx, "my-key")
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+```
+
+## Encoders
+
+### JSON
+Use `NewJSONEncoder()` in the constructor when creating a new client.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewJSONEncoder())
+```
+
+### Gob
+Use `NewGobEncoder()` in the constructor when creating a new client.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+```
+
+### Custom
+You can pass in custom encoders to the client constructor. Below is a message pack example. Using
+[github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack)
+
+```go
+import "github.com/vmihailenco/msgpack/v5"
+
+type MessagePack struct{}
+
+func (m MessagePack) Encode(value any) ([]byte, error) {
+	return msgpack.Marshal(value)
+}
+
+func (m MessagePack) Decode(data []byte, value any) error {
+	return msgpack.Unmarshal(data, value)
+}
+
+func ExampleMessagePack() {
+	c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
+}
+```
+
+## TODO
+
+- Benchmarks
