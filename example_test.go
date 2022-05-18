@@ -21,7 +21,7 @@ func Example() {
 		log.Fatalln(err)
 	}
 
-	err := c.Set(ctx, "my-key", "hello", redigo.Options{
+	err = c.Set(ctx, "my-key", "hello", redigo.Options{
 		Expiration: time.Second * 100,
 		Tags:       []string{"my-tag"},
 	})
