@@ -108,19 +108,40 @@ func ExampleCustom() {
 ```bash
 $ go version
 go version go1.18.2 darwin/amd64
+```
 
-$ go test -benchmem -bench .
-goos: darwin
-goarch: amd64
-pkg: github.com/ainsleyclark/redigo
-cpu: AMD Ryzen 7 5800X 8-Core Processor
-BenchmarkEncode/JSON-16                    56397             21239 ns/op            9293 B/op        206 allocs/op
-BenchmarkEncode/Gob-16                    161018              7481 ns/op            4304 B/op        220 allocs/op
-BenchmarkEncode/Message_Pack-16           110452             10688 ns/op            6819 B/op        208 allocs/op
-BenchmarkDecode/JSON-16                    38413             31247 ns/op            7245 B/op        302 allocs/op
-BenchmarkDecode/Gob-16                     58423             21294 ns/op           12732 B/op        193 allocs/op
-BenchmarkDecode/Message_Pack-16            62198             19288 ns/op            7217 B/op        220 allocs/op
-PASS
+### Encode
+
+```bash
+BenchmarkEncode/JSON/Small-16            4942267               241.6 ns/op           424 B/op          3 allocs/op
+BenchmarkEncode/JSON/Medium-16            776106              1550 ns/op            3484 B/op          3 allocs/op
+BenchmarkEncode/JSON/Large-16              53864             22118 ns/op           42643 B/op          3 allocs/op
+BenchmarkEncode/Gob/Small-16             1957748               626.6 ns/op          1096 B/op         13 allocs/op
+BenchmarkEncode/Gob/Medium-16            1314542               903.4 ns/op          4360 B/op         13 allocs/op
+BenchmarkEncode/Gob/Large-16              200398              6004 ns/op           58120 B/op         13 allocs/op
+BenchmarkEncode/Message_Pack/Small-16    				 7899438               149.5 ns/op           424 B/op          4 allocs/op
+BenchmarkEncode/Message_Pack/Medium-16           3438433               346.9 ns/op          2185 B/op          4 allocs/op
+BenchmarkEncode/Message_Pack/Large-16             399356              2996 ns/op           28827 B/op          4 allocs/op
+BenchmarkEncode/Go_JSON/Small-16                 6966218               151.6 ns/op           424 B/op          4 allocs/op
+BenchmarkEncode/Go_JSON/Medium-16                3529380               347.9 ns/op          2185 B/op          4 allocs/op
+BenchmarkEncode/Go_JSON/Large-16                  420511              2871 ns/op           28827 B/op          4 allocs/op
+```
+
+### Decode
+
+```bash
+BenchmarkDecode/JSON/Small-16                     348264              3517 ns/op            1665 B/op         47 allocs/op
+BenchmarkDecode/JSON/Medium-16                     82147             14939 ns/op           10436 B/op        209 allocs/op
+BenchmarkDecode/JSON/Large-16                       4554            262382 ns/op          210426 B/op       2794 allocs/op
+BenchmarkDecode/Gob/Small-16                       79164             13980 ns/op            8911 B/op        226 allocs/op
+BenchmarkDecode/Gob/Medium-16                      29278             41238 ns/op           24799 B/op        553 allocs/op
+BenchmarkDecode/Gob/Large-16                        2779            423984 ns/op          222722 B/op       4660 allocs/op
+BenchmarkDecode/Message_Pack/Small-16            1000000              1023 ns/op             938 B/op         25 allocs/op
+BenchmarkDecode/Message_Pack/Medium-16            149588              8066 ns/op            8878 B/op        190 allocs/op
+BenchmarkDecode/Message_Pack/Large-16               9164            128152 ns/op          138134 B/op       2493 allocs/op
+BenchmarkDecode/Go_JSON/Small-16                 1210730               996.8 ns/op           938 B/op         25 allocs/op
+BenchmarkDecode/Go_JSON/Medium-16                 148923              8087 ns/op            8861 B/op        190 allocs/op
+BenchmarkDecode/Go_JSON/Large-16                    9086            128562 ns/op          138248 B/op       2493 allocs/op
 ```
 
 ## Credits
