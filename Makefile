@@ -24,7 +24,7 @@ cover: test # Run all the tests and opens the coverage report
 .PHONY: cover
 
 bench: # Runs benchmarks
-	go test -benchmem -bench .
+	go test -benchmem -bench . -run=^#
 .PHONY: bench
 
 mock: # Make mocks keeping directory tree
