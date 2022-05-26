@@ -11,23 +11,26 @@ func UtilTestEncode(t *testing.T, enc Encoder, want string) {
 	t.Run("Encode", func(t *testing.T) {
 		tt := map[string]struct {
 			input any
+			err   bool
 			want  any
 		}{
 			"Success": {
 				"hello",
+				false,
 				want,
 			},
 			"Error": {
 				make(chan []byte),
-				"type: chan []uint8",
+				true,
+				nil,
 			},
 		}
 
 		for name, test := range tt {
 			t.Run(name, func(t *testing.T) {
 				got, err := enc.Encode(test.input)
-				if err != nil {
-					assert.Contains(t, err.Error(), test.want)
+				if test.err {
+					assert.Error(t, err)
 					return
 				}
 				assert.Equal(t, test.want, string(got))
@@ -56,4 +59,8 @@ func TestGobEncode(t *testing.T) {
 
 func TestJSONEncode(t *testing.T) {
 	UtilTestEncode(t, NewJSONEncoder(), "\"hello\"")
+}
+
+func TestMessagePackEncode(t *testing.T) {
+	UtilTestEncode(t, NewMessagePackEncoder(), "\xa5hello")
 }

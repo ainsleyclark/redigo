@@ -74,30 +74,55 @@ Use `NewGobEncoder()` in the constructor when creating a new client.
 c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
 ```
 
-### Custom
-You can pass in custom encoders to the client constructor. Below is a message pack example. Using
-[github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack)
+### Message Pack
+Use `NewMessagePackEncoder()` in the constructor when creating a new client.
+See [github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack) for more details.
 
 ```go
-import "github.com/vmihailenco/msgpack/v5"
+c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
+```
 
-type MessagePack struct{}
+### Custom
+You can pass in custom encoders to the client constructor, that implement the Encode and Decode methods.
+
+```go
+type MyEncoder struct{}
 
 func (m MessagePack) Encode(value any) ([]byte, error) {
-	return msgpack.Marshal(value)
+	// Marshal or encode value
+	return []byte("hello"), nil
 }
 
 func (m MessagePack) Decode(data []byte, value any) error {
-	return msgpack.Unmarshal(data, value)
+	// Unmarshal or decode value
+	return nil
 }
 
-func ExampleMessagePack() {
-	c := redigo.New(&redis.Options{}, &MessagePack{})
+func ExampleCustom() {
+	c := redigo.New(&redis.Options{}, &MyEncoder{})
 }
 ```
 
-## TODO
-- Benchmarks
+
+### Benchmarks
+
+```bash
+$ go version
+go version go1.18.2 darwin/amd64
+
+$ go test -benchmem -bench .
+goos: darwin
+goarch: amd64
+pkg: github.com/ainsleyclark/redigo
+cpu: AMD Ryzen 7 5800X 8-Core Processor
+BenchmarkEncode/JSON-16                    56397             21239 ns/op            9293 B/op        206 allocs/op
+BenchmarkEncode/Gob-16                    161018              7481 ns/op            4304 B/op        220 allocs/op
+BenchmarkEncode/Message_Pack-16           110452             10688 ns/op            6819 B/op        208 allocs/op
+BenchmarkDecode/JSON-16                    38413             31247 ns/op            7245 B/op        302 allocs/op
+BenchmarkDecode/Gob-16                     58423             21294 ns/op           12732 B/op        193 allocs/op
+BenchmarkDecode/Message_Pack-16            62198             19288 ns/op            7217 B/op        220 allocs/op
+PASS
+```
 
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
