@@ -74,7 +74,7 @@ Use `NewGobEncoder()` in the constructor when creating a new client.
 c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
 ```
 
-### MessagePack
+### Message Pack
 Use `NewMessagePackEncoder()` in the constructor when creating a new client.
 See [github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack) for more details.
 
@@ -103,8 +103,26 @@ func ExampleCustom() {
 }
 ```
 
-## TODO
-- Benchmarks
+
+### Benchmarks
+
+```bash
+$ go version
+go version go1.18.2 darwin/amd64
+
+$ go test -benchmem -bench .
+goos: darwin
+goarch: amd64
+pkg: github.com/ainsleyclark/redigo
+cpu: AMD Ryzen 7 5800X 8-Core Processor
+BenchmarkEncode_Gob-16                     18363             65164 ns/op           48784 B/op       2027 allocs/op
+BenchmarkEncode_JSON-16                     4546            262560 ns/op           99304 B/op       2906 allocs/op
+BenchmarkEncode_MessagePack-16             10000            104986 ns/op           54655 B/op       2011 allocs/op
+BenchmarkDecode_Gob-16                     13320             89797 ns/op           54626 B/op        182 allocs/op
+BenchmarkDecode_JSON-16                     3475            339146 ns/op          108784 B/op       3794 allocs/op
+BenchmarkDecode_MessagePack-16              5956            200818 ns/op          102849 B/op       2068 allocs/op
+PASS
+```
 
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
