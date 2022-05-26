@@ -24,6 +24,7 @@ var merges = []struct {
 	{"JSON", NewJSONEncoder()},
 	{"Gob", NewGobEncoder()},
 	{"Message Pack", NewMessagePackEncoder()},
+	{"Go JSON", NewGoJSONEncoder()},
 }
 
 func BenchmarkEncode(b *testing.B) {

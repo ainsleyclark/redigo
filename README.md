@@ -103,7 +103,6 @@ func ExampleCustom() {
 }
 ```
 
-
 ### Benchmarks
 
 ```bash
