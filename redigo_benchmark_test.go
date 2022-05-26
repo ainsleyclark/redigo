@@ -30,23 +30,39 @@ var merges = []struct {
 
 func BenchmarkEncode(b *testing.B) {
 	for _, merge := range merges {
-		for k := 0.; k <= 10; k++ {
-			b.ReportAllocs()
-
-			n := int(math.Pow(2, k))
-			m := createMap(int(k))
-			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
-				for i := 0; i < b.N; i++ {
-					b.StartTimer()
-					res, err := merge.enc.Encode(m)
-					_ = res
-					assert.NoError(b, err)
-				}
-				b.StopTimer()
-			})
-		}
+		b.ReportAllocs()
+		m := createMap(int(100))
+		b.Run(fmt.Sprintf("%s/%d", merge.name, 100), func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				b.StartTimer()
+				res, err := merge.enc.Encode(m)
+				_ = res
+				assert.NoError(b, err)
+			}
+			b.StopTimer()
+		})
 	}
 }
+
+//func BenchmarkEncode(b *testing.B) {
+//	for _, merge := range merges {
+//		for k := 0.; k <= 10; k++ {
+//			b.ReportAllocs()
+//
+//			n := int(math.Pow(2, k))
+//			m := createMap(int(k))
+//			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
+//				for i := 0; i < b.N; i++ {
+//					b.StartTimer()
+//					res, err := merge.enc.Encode(m)
+//					_ = res
+//					assert.NoError(b, err)
+//				}
+//				b.StopTimer()
+//			})
+//		}
+//	}
+//}
 
 func BenchmarkDecode(b *testing.B) {
 	for _, merge := range merges {
