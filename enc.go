@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"github.com/vmihailenco/msgpack/v5"
 )
 
 // Encoder defines methods for encoding and decoding
@@ -55,4 +56,21 @@ func (j jsonEnc) Encode(value any) ([]byte, error) {
 
 func (j jsonEnc) Decode(data []byte, value any) error {
 	return json.Unmarshal(data, value)
+}
+
+// NewMessagePackEncoder returns a new Message Pack
+// encoder for RediGo.
+func NewMessagePackEncoder() Encoder {
+	return &msgEnc{}
+}
+
+// msgEnc implements the encoder interface.
+type msgEnc struct{}
+
+func (m msgEnc) Encode(value any) ([]byte, error) {
+	return msgpack.Marshal(value)
+}
+
+func (m msgEnc) Decode(data []byte, value any) error {
+	return msgpack.Unmarshal(data, value)
 }

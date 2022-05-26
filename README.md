@@ -74,25 +74,32 @@ Use `NewGobEncoder()` in the constructor when creating a new client.
 c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
 ```
 
-### Custom
-You can pass in custom encoders to the client constructor. Below is a message pack example. Using
-[github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack)
+### MessagePack
+Use `NewMessagePackEncoder()` in the constructor when creating a new client.
+See [github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack) for more details.
 
 ```go
-import "github.com/vmihailenco/msgpack/v5"
+c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
+```
 
-type MessagePack struct{}
+### Custom
+You can pass in custom encoders to the client constructor, that implement the Encode and Decode methods.
+
+```go
+type MyEncoder struct{}
 
 func (m MessagePack) Encode(value any) ([]byte, error) {
-	return msgpack.Marshal(value)
+	// Marshal or encode value
+	return []byte("hello"), nil
 }
 
 func (m MessagePack) Decode(data []byte, value any) error {
-	return msgpack.Unmarshal(data, value)
+	// Unmarshal or decode value
+	return nil
 }
 
-func ExampleMessagePack() {
-	c := redigo.New(&redis.Options{}, &MessagePack{})
+func ExampleCustom() {
+	c := redigo.New(&redis.Options{}, &MyEncoder{})
 }
 ```
 
