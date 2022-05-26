@@ -5,7 +5,9 @@
 package redigo
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
+	"math"
 	"testing"
 )
 
@@ -17,80 +19,54 @@ func createMap(max int) map[int64]float64 {
 	return m
 }
 
-func BenchmarkEncode_Gob(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewGobEncoder()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		res, err := enc.Encode(m)
-		_ = res
-		assert.NoError(b, err)
+var merges = []struct {
+	name string
+	enc  Encoder
+}{
+	{"JSON", NewJSONEncoder()},
+	{"Gob", NewGobEncoder()},
+	{"Message Pack", NewMessagePackEncoder()},
+}
+
+func BenchmarkEncode(b *testing.B) {
+	for _, merge := range merges {
+		for k := 0.; k <= 10; k++ {
+			b.ReportAllocs()
+
+			n := int(math.Pow(2, k))
+			m := createMap(int(k))
+			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					b.StartTimer()
+					res, err := merge.enc.Encode(m)
+					_ = res
+					assert.NoError(b, err)
+				}
+				b.StopTimer()
+			})
+		}
 	}
 }
 
-func BenchmarkEncode_JSON(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewJSONEncoder()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		res, err := enc.Encode(m)
-		_ = res
-		assert.NoError(b, err)
-	}
-}
+func BenchmarkDecode(b *testing.B) {
+	for _, merge := range merges {
+		for k := 0.; k <= 10; k++ {
+			b.ReportAllocs()
 
-func BenchmarkEncode_MessagePack(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewMessagePackEncoder()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		res, err := enc.Encode(m)
-		_ = res
-		assert.NoError(b, err)
-	}
-}
+			n := int(math.Pow(2, k))
+			m := createMap(int(k))
+			buf, err := merge.enc.Encode(m)
+			assert.NoError(b, err)
 
-func BenchmarkDecode_Gob(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewGobEncoder()
-	res, err := enc.Encode(m)
-	assert.NoError(b, err)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		var result map[int64]float64
-		err := enc.Decode(res, &result)
-		assert.NoError(b, err)
-	}
-}
-
-func BenchmarkDecode_JSON(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewJSONEncoder()
-	res, err := enc.Encode(m)
-	assert.NoError(b, err)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		var result map[int64]float64
-		err := enc.Decode(res, &result)
-		assert.NoError(b, err)
-	}
-}
-
-func BenchmarkDecode_MessagePack(b *testing.B) {
-	b.ReportAllocs()
-	m := createMap(1000)
-	enc := NewMessagePackEncoder()
-	res, err := enc.Encode(m)
-	assert.NoError(b, err)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		var result map[int64]float64
-		err := enc.Decode(res, &result)
-		assert.NoError(b, err)
+			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
+				for i := 0; i < b.N; i++ {
+					b.StartTimer()
+					m := make(map[int64]float64)
+					err := merge.enc.Decode(buf, &m)
+					assert.NoError(b, err)
+				}
+				b.StopTimer()
+			})
+		}
 	}
 }
