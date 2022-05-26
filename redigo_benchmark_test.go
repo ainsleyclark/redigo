@@ -5,9 +5,7 @@
 package redigo
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
-	"math"
 	"testing"
 )
 
@@ -31,10 +29,10 @@ var merges = []struct {
 func BenchmarkEncode(b *testing.B) {
 	for _, merge := range merges {
 		b.ReportAllocs()
-		m := createMap(int(100))
-		b.Run(fmt.Sprintf("%s/%d", merge.name, 100), func(b *testing.B) {
+		m := createMap(100)
+		b.Run(merge.name, func(b *testing.B) {
+			b.StartTimer()
 			for i := 0; i < b.N; i++ {
-				b.StartTimer()
 				res, err := merge.enc.Encode(m)
 				_ = res
 				assert.NoError(b, err)
@@ -44,7 +42,25 @@ func BenchmarkEncode(b *testing.B) {
 	}
 }
 
-//func BenchmarkEncode(b *testing.B) {
+func BenchmarkDecode(b *testing.B) {
+	for _, merge := range merges {
+		b.ReportAllocs()
+		m := createMap(100)
+		buf, err := merge.enc.Encode(m)
+		assert.NoError(b, err)
+		b.Run(merge.name, func(b *testing.B) {
+			b.StartTimer()
+			for i := 0; i < b.N; i++ {
+				m := make(map[int64]float64)
+				err := merge.enc.Decode(buf, &m)
+				assert.NoError(b, err)
+			}
+			b.StopTimer()
+		})
+	}
+}
+
+//func BenchmarkEncode_100(b *testing.B) {
 //	for _, merge := range merges {
 //		for k := 0.; k <= 10; k++ {
 //			b.ReportAllocs()
@@ -63,26 +79,26 @@ func BenchmarkEncode(b *testing.B) {
 //		}
 //	}
 //}
-
-func BenchmarkDecode(b *testing.B) {
-	for _, merge := range merges {
-		for k := 0.; k <= 10; k++ {
-			b.ReportAllocs()
-
-			n := int(math.Pow(2, k))
-			m := createMap(int(k))
-			buf, err := merge.enc.Encode(m)
-			assert.NoError(b, err)
-
-			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
-				for i := 0; i < b.N; i++ {
-					b.StartTimer()
-					m := make(map[int64]float64)
-					err := merge.enc.Decode(buf, &m)
-					assert.NoError(b, err)
-				}
-				b.StopTimer()
-			})
-		}
-	}
-}
+//
+//func BenchmarkDecode_100(b *testing.B) {
+//	for _, merge := range merges {
+//		for k := 0.; k <= 10; k++ {
+//			b.ReportAllocs()
+//
+//			n := int(math.Pow(2, k))
+//			m := createMap(int(k))
+//			buf, err := merge.enc.Encode(m)
+//			assert.NoError(b, err)
+//
+//			b.Run(fmt.Sprintf("%s/%d", merge.name, n), func(b *testing.B) {
+//				for i := 0; i < b.N; i++ {
+//					b.StartTimer()
+//					m := make(map[int64]float64)
+//					err := merge.enc.Decode(buf, &m)
+//					assert.NoError(b, err)
+//				}
+//				b.StopTimer()
+//			})
+//		}
+//	}
+//}

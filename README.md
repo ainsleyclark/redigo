@@ -115,12 +115,12 @@ goos: darwin
 goarch: amd64
 pkg: github.com/ainsleyclark/redigo
 cpu: AMD Ryzen 7 5800X 8-Core Processor
-BenchmarkEncode_Gob-16                     18363             65164 ns/op           48784 B/op       2027 allocs/op
-BenchmarkEncode_JSON-16                     4546            262560 ns/op           99304 B/op       2906 allocs/op
-BenchmarkEncode_MessagePack-16             10000            104986 ns/op           54655 B/op       2011 allocs/op
-BenchmarkDecode_Gob-16                     13320             89797 ns/op           54626 B/op        182 allocs/op
-BenchmarkDecode_JSON-16                     3475            339146 ns/op          108784 B/op       3794 allocs/op
-BenchmarkDecode_MessagePack-16              5956            200818 ns/op          102849 B/op       2068 allocs/op
+BenchmarkEncode/JSON-16                    56397             21239 ns/op            9293 B/op        206 allocs/op
+BenchmarkEncode/Gob-16                    161018              7481 ns/op            4304 B/op        220 allocs/op
+BenchmarkEncode/Message_Pack-16           110452             10688 ns/op            6819 B/op        208 allocs/op
+BenchmarkDecode/JSON-16                    38413             31247 ns/op            7245 B/op        302 allocs/op
+BenchmarkDecode/Gob-16                     58423             21294 ns/op           12732 B/op        193 allocs/op
+BenchmarkDecode/Message_Pack-16            62198             19288 ns/op            7217 B/op        220 allocs/op
 PASS
 ```
 
