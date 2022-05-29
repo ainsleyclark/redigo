@@ -12,8 +12,11 @@
 </div>
 
 # RediGo
-
 A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
+
+## Why?
+RediGo is a wrapper for the Redis V8 GoLang client that features tagging, expiration and automatic encoding and decoding
+using various encoders. Gob encoding performs alot better which you can see from the benchmarks below.
 
 ## Install
 
@@ -45,7 +48,7 @@ func ExampleClient() {
 	}
 
 	var val string
-	err = c.Get(ctx, "my-key", &val)
+	err = c.Get(ctx, "my-key", &val) // Be sure to pass a reference!
 	if err != nil {
 		log.Fatalln(err)
 	}
