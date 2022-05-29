@@ -120,7 +120,7 @@ BenchmarkEncode/Go_JSON-16                115938             10300 ns/op        
 ```
 
 #### Graph representing ns/op.
-![Encoding Benchmark Graph](./graph/Encode.svg)
+<img width="100%" src="graph/Encode.svg" alt="Encoding Benchmark Graph" />
 
 ### Decode
 
@@ -129,8 +129,10 @@ BenchmarkDecode/JSON/-16                   39798             30011 ns/op        
 BenchmarkDecode/Gob/-16                    58815             20958 ns/op           12734 B/op        193 allocs/op
 BenchmarkDecode/Message_Pack/-16           56742             21574 ns/op            7217 B/op        220 allocs/op
 BenchmarkDecode/Go_JSON/-16                58614             21888 ns/op            7218 B/op        220 allocs/op
-
 ```
+
+#### Graph representing ns/op.
+<img width="100%" src="graph/Decode.svg" alt="Decoding Benchmark Graph" />
 
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
