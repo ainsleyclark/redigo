@@ -64,3 +64,7 @@ func TestJSONEncode(t *testing.T) {
 func TestMessagePackEncode(t *testing.T) {
 	UtilTestEncode(t, NewMessagePackEncoder(), "\xa5hello")
 }
+
+func TestGoJSONEncode(t *testing.T) {
+	UtilTestEncode(t, NewGoJSONEncoder(), "\"hello\"")
+}
