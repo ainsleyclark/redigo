@@ -16,7 +16,9 @@ A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 
 ## Why?
 RediGo is a wrapper for the Redis V8 GoLang client that features tagging, expiration and automatic encoding and decoding
-using various encoders. Gob encoding performs alot better which you can see from the benchmarks below.
+using various encoders. It helps to unify various encoding techniques with a simple and easy to user interface.
+
+Gob encoding performs drastically better in comparison to JSON which you can see from the benchmarks below.
 
 ## Install
 
