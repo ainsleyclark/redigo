@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	gojson "github.com/goccy/go-json"
 	"github.com/vmihailenco/msgpack/v5"
 )
 
@@ -73,4 +74,21 @@ func (m msgEnc) Encode(value any) ([]byte, error) {
 
 func (m msgEnc) Decode(data []byte, value any) error {
 	return msgpack.Unmarshal(data, value)
+}
+
+// NewGoJSONEncoder returns a new Go JSON
+// encoder for RediGo.
+func NewGoJSONEncoder() Encoder {
+	return &goJSONEnc{}
+}
+
+// goJSONEnc implements the encoder interface.
+type goJSONEnc struct{}
+
+func (g goJSONEnc) Encode(value any) ([]byte, error) {
+	return gojson.Marshal(value)
+}
+
+func (g goJSONEnc) Decode(data []byte, value any) error {
+	return gojson.Unmarshal(data, value)
 }

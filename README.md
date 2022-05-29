@@ -12,8 +12,13 @@
 </div>
 
 # RediGo
-
 A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
+
+## Why?
+RediGo is a wrapper for the Redis V8 GoLang client that features tagging, expiration and automatic encoding and decoding
+using various encoders. It helps to unify various encoding techniques with a simple and easy to user interface.
+
+Gob encoding performs drastically better in comparison to JSON which you can see from the benchmarks below.
 
 ## Install
 
@@ -45,7 +50,7 @@ func ExampleClient() {
 	}
 
 	var val string
-	err = c.Get(ctx, "my-key", &val)
+	err = c.Get(ctx, "my-key", &val) // Be sure to pass a reference!
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -61,22 +66,26 @@ func ExampleClient() {
 ## Encoders
 
 ### JSON
-Use `NewJSONEncoder()` in the constructor when creating a new client.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewJSONEncoder())
 ```
 
 ### Gob
-Use `NewGobEncoder()` in the constructor when creating a new client.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
 ```
 
 ### Message Pack
-Use `NewMessagePackEncoder()` in the constructor when creating a new client.
 See [github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack) for more details.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
+```
+
+### Go JSON
+See [github.com/goccy/go-json](https://github.com/goccy/go-json) for more details.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
@@ -103,26 +112,37 @@ func ExampleCustom() {
 }
 ```
 
-
 ### Benchmarks
 
 ```bash
 $ go version
 go version go1.18.2 darwin/amd64
-
-$ go test -benchmem -bench .
-goos: darwin
-goarch: amd64
-pkg: github.com/ainsleyclark/redigo
-cpu: AMD Ryzen 7 5800X 8-Core Processor
-BenchmarkEncode/JSON-16                    56397             21239 ns/op            9293 B/op        206 allocs/op
-BenchmarkEncode/Gob-16                    161018              7481 ns/op            4304 B/op        220 allocs/op
-BenchmarkEncode/Message_Pack-16           110452             10688 ns/op            6819 B/op        208 allocs/op
-BenchmarkDecode/JSON-16                    38413             31247 ns/op            7245 B/op        302 allocs/op
-BenchmarkDecode/Gob-16                     58423             21294 ns/op           12732 B/op        193 allocs/op
-BenchmarkDecode/Message_Pack-16            62198             19288 ns/op            7217 B/op        220 allocs/op
-PASS
 ```
+
+### Encode
+
+```bash
+BenchmarkEncode/JSON-16                    54728             21813 ns/op            9294 B/op        206 allocs/op
+BenchmarkEncode/Gob-16                    154272              7629 ns/op            4304 B/op        220 allocs/op
+BenchmarkEncode/Message_Pack-16           113059             10468 ns/op            6820 B/op        208 allocs/op
+BenchmarkEncode/Go_JSON-16                 92598             12768 ns/op             897 B/op          1 allocs/op
+```
+
+#### Graph representing ns/op.
+<img width="100%" src="graph/Encode.svg" alt="Encoding Benchmark Graph" />
+
+### Decode
+
+```bash
+BenchmarkDecode/JSON/-16                   39386             30318 ns/op            7246 B/op        302 allocs/op
+BenchmarkDecode/Gob/-16                    57792             20742 ns/op           12733 B/op        193 allocs/op
+BenchmarkDecode/Message_Pack/-16           57416             20626 ns/op            7217 B/op        220 allocs/op
+BenchmarkDecode/Go_JSON/-16                95376             12186 ns/op            8068 B/op        220 allocs/op
+
+```
+
+#### Graph representing ns/op.
+<img width="100%" src="graph/Decode.svg" alt="Decoding Benchmark Graph" />
 
 ## Credits
 Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
