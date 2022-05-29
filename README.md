@@ -122,10 +122,10 @@ go version go1.18.2 darwin/amd64
 ### Encode
 
 ```bash
-BenchmarkEncode/JSON-16                    54513             21684 ns/op            9294 B/op        206 allocs/op
-BenchmarkEncode/Gob-16                    156678              7641 ns/op            4304 B/op        220 allocs/op
-BenchmarkEncode/Message_Pack-16           116875             10334 ns/op            6820 B/op        208 allocs/op
-BenchmarkEncode/Go_JSON-16                115938             10300 ns/op            6820 B/op        208 allocs/op
+BenchmarkEncode/JSON-16                    54728             21813 ns/op            9294 B/op        206 allocs/op
+BenchmarkEncode/Gob-16                    154272              7629 ns/op            4304 B/op        220 allocs/op
+BenchmarkEncode/Message_Pack-16           113059             10468 ns/op            6820 B/op        208 allocs/op
+BenchmarkEncode/Go_JSON-16                 92598             12768 ns/op             897 B/op          1 allocs/op
 ```
 
 #### Graph representing ns/op.
@@ -134,10 +134,11 @@ BenchmarkEncode/Go_JSON-16                115938             10300 ns/op        
 ### Decode
 
 ```bash
-BenchmarkDecode/JSON/-16                   39798             30011 ns/op            7243 B/op        302 allocs/op
-BenchmarkDecode/Gob/-16                    58815             20958 ns/op           12734 B/op        193 allocs/op
-BenchmarkDecode/Message_Pack/-16           56742             21574 ns/op            7217 B/op        220 allocs/op
-BenchmarkDecode/Go_JSON/-16                58614             21888 ns/op            7218 B/op        220 allocs/op
+BenchmarkDecode/JSON/-16                   39386             30318 ns/op            7246 B/op        302 allocs/op
+BenchmarkDecode/Gob/-16                    57792             20742 ns/op           12733 B/op        193 allocs/op
+BenchmarkDecode/Message_Pack/-16           57416             20626 ns/op            7217 B/op        220 allocs/op
+BenchmarkDecode/Go_JSON/-16                95376             12186 ns/op            8068 B/op        220 allocs/op
+
 ```
 
 #### Graph representing ns/op.

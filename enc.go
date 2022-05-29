@@ -79,16 +79,16 @@ func (m msgEnc) Decode(data []byte, value any) error {
 // NewGoJSONEncoder returns a new Go JSON
 // encoder for RediGo.
 func NewGoJSONEncoder() Encoder {
-	return &msgEnc{}
+	return &goJSONEnc{}
 }
 
-// goJsonEnc implements the encoder interface.
-type goJsonEnc struct{}
+// goJSONEnc implements the encoder interface.
+type goJSONEnc struct{}
 
-func (g goJsonEnc) Encode(value any) ([]byte, error) {
+func (g goJSONEnc) Encode(value any) ([]byte, error) {
 	return gojson.Marshal(value)
 }
 
-func (g goJsonEnc) Decode(data []byte, value any) error {
+func (g goJSONEnc) Decode(data []byte, value any) error {
 	return gojson.Unmarshal(data, value)
 }

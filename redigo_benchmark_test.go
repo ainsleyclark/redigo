@@ -33,19 +33,17 @@ func BenchmarkEncode(b *testing.B) {
 	b.ReportAllocs()
 
 	for _, merge := range merges {
-		for _, size := range sizes {
-			b.Run(merge.name, func(b *testing.B) {
-				m := createMap(100)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					res, err := merge.enc.Encode(m)
-					_ = res
-					if err != nil {
-						b.Logf("Error during benchmark: %s", err.Error())
-					}
+		b.Run(merge.name, func(b *testing.B) {
+			m := createMap(100)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				res, err := merge.enc.Encode(m)
+				_ = res
+				if err != nil {
+					b.Logf("Error during benchmark: %s", err.Error())
 				}
-			})
-		}
+			}
+		})
 
 	}
 }
