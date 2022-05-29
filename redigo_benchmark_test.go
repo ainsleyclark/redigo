@@ -35,9 +35,10 @@ func BenchmarkEncode(b *testing.B) {
 
 	for _, merge := range merges {
 		b.Run(merge.name, func(b *testing.B) {
+			m := createMap(100)
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
-				res, err := merge.enc.Encode(createMap(100))
+				res, err := merge.enc.Encode(m)
 				_ = res
 				if err != nil {
 					b.Logf("Error during benchmark: %s", err.Error())
