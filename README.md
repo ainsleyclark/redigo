@@ -61,22 +61,26 @@ func ExampleClient() {
 ## Encoders
 
 ### JSON
-Use `NewJSONEncoder()` in the constructor when creating a new client.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewJSONEncoder())
 ```
 
 ### Gob
-Use `NewGobEncoder()` in the constructor when creating a new client.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewGobEncoder())
 ```
 
 ### Message Pack
-Use `NewMessagePackEncoder()` in the constructor when creating a new client.
 See [github.com/vmihailenco/msgpack](https://github.com/vmihailenco/msgpack) for more details.
+
+```go
+c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
+```
+
+### Go JSON
+See [github.com/goccy/go-json](https://github.com/goccy/go-json) for more details.
 
 ```go
 c := redigo.New(&redis.Options{}, redigo.NewMessagePackEncoder())
