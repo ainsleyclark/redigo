@@ -5,7 +5,6 @@
 package redigo
 
 import (
-	"encoding/gob"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -50,9 +49,6 @@ func BenchmarkEncode(b *testing.B) {
 
 func BenchmarkDecode(b *testing.B) {
 	b.ReportAllocs()
-
-	gob.Register(map[string]any{})
-	gob.Register([]any{})
 
 	for _, merge := range merges {
 		b.Run(merge.name+"/", func(b *testing.B) {
