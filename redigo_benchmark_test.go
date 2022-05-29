@@ -6,7 +6,6 @@ package redigo
 
 import (
 	"encoding/gob"
-	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -22,19 +21,6 @@ var (
 		{"Go JSON", NewGoJSONEncoder()},
 	}
 )
-
-func EncodeBuf(b *testing.B, buf []byte, enc Encoder) []byte {
-	b.Helper()
-
-	var tmp any
-	err := json.Unmarshal(buf, &tmp)
-	assert.NoError(b, err)
-
-	encode, err := enc.Encode(tmp)
-	assert.NoError(b, err)
-
-	return encode
-}
 
 func createMap(max int) map[int64]float64 {
 	m := make(map[int64]float64)
