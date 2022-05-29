@@ -119,7 +119,7 @@ BenchmarkEncode/Message_Pack-16           116875             10334 ns/op        
 BenchmarkEncode/Go_JSON-16                115938             10300 ns/op            6820 B/op        208 allocs/op
 ```
 
-Graph representing ns/op.
+#### Graph representing ns/op.
 ![Encoding Benchmark Graph](./graph/Encode.svg)
 
 ### Decode
