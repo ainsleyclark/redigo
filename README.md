@@ -11,7 +11,7 @@
 
 </div>
 
-# RediGo
+# 🔥 RediGo
 A Redis client for GoLang featuring Tags with Gob &amp; JSON encoding.
 
 ## Why?
@@ -144,5 +144,14 @@ BenchmarkDecode/Go_JSON/-16                95376             12186 ns/op        
 #### Graph representing ns/op.
 <img width="100%" src="graph/Decode.svg" alt="Decoding Benchmark Graph" />
 
+## Contributing
+
+Please feel free to make a pull request if you think something should be added to this package!
+
 ## Credits
-Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations
+
+Shout out to the incredible [Maria Letta](https://github.com/MariaLetta) for her excellent Gopher illustrations.
+
+## Licence
+
+Code Copyright 2022 RediGo. Code released under the [MIT Licence](LICENSE).
