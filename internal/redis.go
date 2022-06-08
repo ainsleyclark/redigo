@@ -22,5 +22,6 @@ type (
 		FlushAll(ctx context.Context) *redis.StatusCmd
 		SAdd(ctx context.Context, key string, members ...interface{}) *redis.IntCmd
 		Expire(ctx context.Context, key string, expiration time.Duration) *redis.BoolCmd
+		Close() error
 	}
 )
