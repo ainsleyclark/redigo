@@ -127,6 +127,39 @@ func (t *CacheTestSuite) TestPing() {
 	}
 }
 
+func (t *CacheTestSuite) TestClose() {
+	tt := map[string]struct {
+		mock func(m *mocks.RedisStore, enc *mocks.Encoder)
+		want any
+	}{
+		"Success": {
+			func(m *mocks.RedisStore, enc *mocks.Encoder) {
+				m.On("Close").
+					Return(nil)
+			},
+			nil,
+		},
+		"Ping Error": {
+			func(m *mocks.RedisStore, enc *mocks.Encoder) {
+				m.On("Close").
+					Return(errors.New("close error"))
+			},
+			"close error",
+		},
+	}
+
+	for name, test := range tt {
+		t.Run(name, func() {
+			c := t.Setup(test.mock)
+			err := c.Close()
+			if err != nil {
+				t.Contains(err.Error(), test.want)
+				return
+			}
+		})
+	}
+}
+
 func (t *CacheTestSuite) TestCache_Get() {
 	tt := map[string]struct {
 		mock func(m *mocks.RedisStore, enc *mocks.Encoder)

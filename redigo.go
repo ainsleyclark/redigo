@@ -8,6 +8,7 @@ import (
 	"context"
 	"github.com/ainsleyclark/redigo/internal"
 	"github.com/go-redis/redis/v8"
+	"io"
 	"sync"
 	"time"
 )
@@ -49,7 +50,8 @@ type (
 		Invalidate(context.Context, []string)
 		// Flush removes all items from the cache.
 		Flush(context.Context)
-		// TODO - Add Close() error io.Closer method.
+		// Closer closes the client, releasing any open resources.
+		io.Closer
 	}
 )
 
@@ -65,6 +67,11 @@ func New(opts *redis.Options, enc Encoder) *Cache {
 // Ping pings the Redis cache to ensure its alive.
 func (c *Cache) Ping(ctx context.Context) error {
 	return c.client.Ping(ctx).Err()
+}
+
+// Close closes the client, releasing any open resources.
+func (c *Cache) Close() error {
+	return c.client.Close()
 }
 
 // Get retrieves a specific item from the cache by key. Values are
